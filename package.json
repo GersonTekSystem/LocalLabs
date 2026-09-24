@@ -1,0 +1,18 @@
+{
+  "name": "locallabs-pipeline-tests",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "examples/standard-version",
+    "examples/changesets"
+  ],
+  "scripts": {
+    "test": "node --test tests/versioning/*.test.mjs"
+  },
+  "devDependencies": {
+    "@changesets/changelog-git": "1.0.0",
+    "@changesets/cli": "3.0.3",
+    "standard-version": "9.5.0",
+    "yaml": "2.9.1"
+  }
+}

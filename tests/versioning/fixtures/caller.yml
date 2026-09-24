@@ -1,0 +1,34 @@
+name: Validar versão por sprint
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+jobs:
+  preview:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@v1
+    with:
+      adapter: standard-version
+      release_branch: release/v1.0.0
+      project_path: examples/standard-version
+  publish:
+    if: github.event_name == 'push' && github.ref_name == 'main'
+    permissions:
+      contents: write
+      pull-requests: read
+      issues: read
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@v1
+    with:
+      adapter: standard-version
+      release_branch: release/v1.0.0
+      target_branch: main
+      project_path: examples/standard-version
+      homologation_environment: homologation
+    concurrency:
+      group: version-publish-${{ github.repository }}-main
+      cancel-in-progress: false
