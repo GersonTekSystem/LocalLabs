@@ -1,5 +1,35 @@
 # Validação da feature 001 em LocalLabs
 
+## Contrato pós-merge (revisão em andamento)
+
+- O checklist e a implementação atualizada estão em
+  `ModulosTestesAutomatizados/.github/openspec/changes/corrigir-versionamento-pos-merge/`.
+- O conjunto original de 10 testes pertence ao contrato antigo de prévia
+  SemVer obrigatória; o código foi preservado em `versioning.legacy.mjs` e
+  não deve ser usado como evidência da nova versão.
+- Suíte nova `npm test`: checks contextuais de PR, dois perfis Node com PR
+  pós-merge/tag no SHA versionado, dez reexecuções, recuperação de release
+  ausente e conflito simulado; `npm run test:ts` compila/testa consumidor.
+- `standard-version@9.5.0` e `@changesets/cli@2.29.5` foram executados de
+  verdade em repositórios temporários: nenhum criou tag ou commit na fase de
+  preparação. O Changesets exigiu sincronização adicional do
+  `package-lock.json` do workspace após `changeset version`.
+- Go 1.27 e `go-gitsemver` na revisão fixada calcularam localmente `1.0.0`
+  para a branch `master` antes da ativação da publicação. O teste Java/Spring
+  Boot depende do runner com Java 17/Maven ou de toolchain local equivalente.
+
+### Matriz de evidências hospedadas (preencher durante as rodadas)
+
+| Rodada | Milestone/épica | PRs feature → release → develop → master | Check/CI e homologação | SHA funcional | PR de versão/SHA | Tag/Release | Reexecução e conflito |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `standard-version` | pendente | pendente | pendente | pendente | pendente | pendente | pendente |
+| `changesets` | pendente | pendente | pendente | pendente | pendente | pendente | pendente |
+| `jgitver` | pendente | pendente | pendente | pendente | não se aplica se derivado de Git | pendente | pendente |
+| `go-gitsemver` | pendente | pendente | pendente | pendente | não se aplica se derivado de Git | pendente | pendente |
+
+Sem URLs/SHA e aprovação real preenchidos nessa tabela, a publicação hospedada
+e seus gates continuam **não validados**.
+
 ## Verificações locais
 
 - `npm test`: **10/10 cenários passaram** em repositórios Git temporários:

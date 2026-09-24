@@ -26,7 +26,11 @@ assert.ok(preview.on.workflow_call);
 assert.ok(publish.on.workflow_call);
 assert.equal(preview.jobs.preview.permissions.contents, 'read');
 assert.equal(publish.jobs.publish.permissions.contents, 'write');
-assert.match(caller.jobs.preview.uses, /@v1$/);
+assert.match(caller.jobs['validate-pr'].uses, /@(REPLACE_WITH_SHARED_SHA|[0-9a-f]{40})$/);
+assert.equal(caller.jobs['validate-pr'].with.target_branch, 'master');
+assert.equal(preview.on.workflow_call.inputs.target_branch.required, true);
+assert.ok(preview.on.workflow_call.outputs.phase);
+assert.ok(publish.on.workflow_call.outputs.version_pr_url);
 assert.equal(caller.jobs.publish.concurrency['cancel-in-progress'], false);
 console.log('YAML e contratos dos workflows: OK');
 JS
