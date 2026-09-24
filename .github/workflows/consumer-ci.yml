@@ -45,6 +45,19 @@ jobs:
           cache-dependency-path: examples/jgitver/pom.xml
       - run: mvn -B -ntp verify
         working-directory: examples/jgitver
+      - name: Conferir versão estável para publicação na principal
+        if: github.event_name == 'push' && github.ref_name == 'master'
+        env:
+          JGITVER_BRANCH: master
+        working-directory: examples/jgitver
+        run: |
+          version=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
+          version=${version##*$'\n'}
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo "jgitver não calculou versão estável: $version" >&2
+            exit 1
+          }
+          echo "Versão candidata do commit para master: $version"
 
   shared-contract:
     if: vars.SHARED_VERSIONING_SHA != ''
