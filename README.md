@@ -37,11 +37,14 @@ Go: esses builds são responsabilidade da CI do consumidor.
 2. Criar `develop` e uma `release/vX.Y.Z` a partir dela para cada rodada;
    criar milestone `vX.Y.Z`, épica de mesmo título e sub-issues da sprint.
    `vX.Y.Z` da milestone **não** é a versão obrigatória da aplicação.
-3. Configurar em `master` os checks `validate-pr / preview` e `CI do
-   consumidor` relevantes, revisão humana e environment `homologation` com
-   aprovação. Instalar **somente** o job `validate-pr` do modelo em
-   `.github/workflows/` e ensaiar feature → release, release → develop e
-   develop → master, inclusive falhas por vínculo/homologação ausente.
+   Encerrar épica e milestone após a homologação breve e antes do PR
+   `release → develop`; a homologação completa ocorre antes de `develop → master`.
+3. Configurar em `master` os checks de `.github/workflows/version-validation.yml`
+   e de `CI do consumidor` relevantes, revisão humana e environment
+   `homologation` com aprovação. O workflow ativo tem **somente checks de PR**
+   para os quatro perfis; o job `publish` permanece apenas no modelo inativo.
+   Ensaiar feature → release, release → develop e develop → master, inclusive
+   falhas por vínculo/homologação ausente.
 4. Depois de comprovar os checks de PR, habilitar publicação de **um perfil
    por vez**. Para os perfis Node, providenciar `VERSIONING_TOKEN` (GitHub App
    ou identidade que abra PR e dispare checks), revisar e integrar o PR de

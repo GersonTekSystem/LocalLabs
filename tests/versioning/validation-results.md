@@ -17,6 +17,12 @@
 - Go 1.27 e `go-gitsemver` na revisão fixada calcularam localmente `1.0.0`
   para a branch `master` antes da ativação da publicação. O teste Java/Spring
   Boot depende do runner com Java 17/Maven ou de toolchain local equivalente.
+- A revisão compartilhada `b4883c78d214d61255e0adae7dead8dc3dad9692`
+  existe remotamente; `SHARED_VERSIONING_SHA` aponta para ela no LocalLabs.
+- [CI hospedada do PR de preparação #1](https://github.com/GersonTekSystem/LocalLabs/actions/runs/36074238666)
+  (reexecução 2): `shared-contract`, Node/TypeScript, Go e Spring Boot/Maven
+  passaram. O jgitver calculou `0.0.0` na branch de ensaio com a configuração
+  estável; falta observá-lo após integração efetiva em `master`.
 
 ### Matriz de evidências hospedadas (preencher durante as rodadas)
 
