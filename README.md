@@ -10,7 +10,7 @@ consumidores. A branch principal deste repositório é **`master`**.
 | `standard-version` | `examples/standard-version` | TypeScript: compilação e teste | PR de versão após merge funcional; tag `vX.Y.Z` no commit versionado |
 | `changesets` | `examples/changesets` | instalação/contrato Node | PR de versão; tag `@locallabs/changesets-example@X.Y.Z` |
 | `jgitver` | `examples/jgitver` | Spring Boot: Maven `verify` com Java 17 | versão derivada do Git no SHA integrado |
-| `go-gitsemver` | `examples/go-gitsemver` | `go test ./...` com Go 1.27 | versão derivada do Git no SHA integrado |
+| `go-gitsemver` | `examples/go-gitsemver` | CI Go reutilizável: teste, análise e build | versão derivada do Git no SHA integrado |
 
 O workflow em `.github/workflows/consumer-ci.yml` testa build/execução do
 consumidor. Os scripts de versionamento vivem no repositório `.github`, não
@@ -45,8 +45,8 @@ Go: esses builds são responsabilidade da CI do consumidor.
    para os quatro perfis; o job `publish` permanece apenas no modelo inativo.
    Ensaiar feature → release, release → develop e develop → master, inclusive
    falhas por vínculo/homologação ausente.
-4. Depois de comprovar os checks de PR, habilitar publicação de **um perfil
-   por vez**. Para os perfis Node, providenciar `VERSIONING_TOKEN` (GitHub App
+4. Depois de comprovar os checks de PR, habilitar primeiro **somente Go**.
+   Para os perfis Node posteriores, providenciar `VERSIONING_TOKEN` (GitHub App
    ou identidade que abra PR e dispare checks), revisar e integrar o PR de
    versionamento antes da tag. Para Go e Java, conferir versão estável derivada
    do Git no SHA integrado. Nunca disputar a mesma tag para dois perfis.
@@ -59,4 +59,6 @@ O teste de `standard-version` deve reunir mais de um PR na mesma release sem
 tag intermediária. A homologação pode anexar um guia provisório sem exigir
 prévia SemVer, e arquivos de versão/changelog só são alterados **após** o merge
 funcional na principal. Veja o [contrato compartilhado](https://github.com/ModulosTestesAutomatizados/.github/blob/feature/issue-2/docs/versioning.md)
-para saídas, permissões e recuperação.
+para saídas, permissões e recuperação. O arquivo
+`tests/versioning/fixtures/caller.yml` é um modelo inativo: a publicação só será
+ativada após configurar review obrigatório e o environment protegido.
