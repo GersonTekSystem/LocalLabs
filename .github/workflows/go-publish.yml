@@ -14,10 +14,10 @@ jobs:
       contents: write
       pull-requests: read
       issues: read
-    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@ce1ad6bcaba9a27d86101984d6ef348c5dd0d583
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@8b0c6a372ab560400a735bbe42a8a39af823cacf
     with:
       adapter: go-gitsemver
       project_path: examples/go-gitsemver
-      release_branch: release/v1.0.0
+      release_branch: release/v1.0.1
       target_branch: master
       homologation_environment: homologation

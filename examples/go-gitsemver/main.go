@@ -6,7 +6,7 @@ import (
 )
 
 func releaseSummary(pName string) string {
-	name := strings.TrimSpace(pName)
+	name := strings.Join(strings.Fields(pName), " ")
 	if name == "" {
 		return "LocalLabs: sem entrega"
 	}
