@@ -20,3 +20,4 @@ ensaio, configure review obrigatório e uma environment `homologation` protegida
 O arquivo `tests/versioning/fixtures/caller.yml` mostra a chamada mas não dispara
 publicação neste repositório automaticamente. Não execute o teste de publicação
 contra a branch principal sem esses gates.
+
