@@ -27,8 +27,14 @@
 - [CI atualizada do PR #1](https://github.com/GersonTekSystem/LocalLabs/actions/runs/36139171499):
   Node, Go reutilizável (teste/análise/build), Java e contrato compartilhado
   passaram. O contrato foi reexecutado após atualizar a variável para a revisão
-  Go. O [PR #1](https://github.com/GersonTekSystem/LocalLabs/pull/1) aguarda
-  revisão humana; publicação permanece desabilitada.
+  Go. O [PR #1](https://github.com/GersonTekSystem/LocalLabs/pull/1) foi
+  aprovado por `GersonTekSystem` e integrado por `agentegersonfribeiro-AI`
+  no SHA `1711dbdd762bf5b611230670b5dec602e896ba27`, ainda sem publicação.
+- `release/v1.0.0` foi sincronizada com esse SHA. `release/v1.0.0`, `develop`
+  e `master` exigem `consumer-go / verify-go`,
+  `validate-go-gitsemver / preview` e uma revisão humana vigente, inclusive
+  após novo push. O environment `homologation` aceita só `master` e exige
+  aprovação de `GersonTekSystem` com autoaprovação impedida.
 
 ### Matriz de evidências hospedadas (preencher durante as rodadas)
 
@@ -37,7 +43,7 @@
 | `standard-version` | pendente | pendente | pendente | pendente | pendente | pendente | pendente |
 | `changesets` | pendente | pendente | pendente | pendente | pendente | pendente | pendente |
 | `jgitver` | pendente | pendente | pendente | pendente | não se aplica se derivado de Git | pendente | pendente |
-| `go-gitsemver` | `v1.0.0` / épica [#3](https://github.com/GersonTekSystem/LocalLabs/issues/3), sub-issue [#4](https://github.com/GersonTekSystem/LocalLabs/issues/4) | [preparação #1](https://github.com/GersonTekSystem/LocalLabs/pull/1); [feature #5](https://github.com/GersonTekSystem/LocalLabs/pull/5); demais pendentes | [CI de preparação](https://github.com/GersonTekSystem/LocalLabs/actions/runs/36139171499); aprovação pendente | pendente | não se aplica | pendente | pendente |
+| `go-gitsemver` | `v1.0.0` / épica [#3](https://github.com/GersonTekSystem/LocalLabs/issues/3), sub-issue [#4](https://github.com/GersonTekSystem/LocalLabs/issues/4) | [preparação #1](https://github.com/GersonTekSystem/LocalLabs/pull/1) integrada; [feature/caller #5](https://github.com/GersonTekSystem/LocalLabs/pull/5) em revisão; demais pendentes | [CI de preparação](https://github.com/GersonTekSystem/LocalLabs/actions/runs/36139171499); aprovação do PR #1 registrada; homologação pendente | pendente | não se aplica | pendente | pendente |
 
 Sem URLs/SHA e aprovação real preenchidos nessa tabela, a publicação hospedada
 e seus gates continuam **não validados**.
@@ -64,9 +70,9 @@ e seus gates continuam **não validados**.
 
 ## Validação hospedada pendente
 
-- O caller Go de publicação **ainda não** está ativo em `.github/workflows/`.
-  A revisão fixa por SHA já existe; faltam merge revisado da preparação,
-  proteção de branches, environment e homologação real.
+- O caller Go já consta no PR #5, mas **ainda não** está em `master`; portanto
+  não houve publicação. Faltam os merges revisados do fluxo e a aprovação
+  real do environment.
 - A primeira execução real será apenas Go. Os demais perfis seguem em
   `jgitver → Changesets/Turbo → standard-version` e não bloqueiam esta rodada.
 - A ausência dessa etapa significa que critérios de tempo e cenários de
