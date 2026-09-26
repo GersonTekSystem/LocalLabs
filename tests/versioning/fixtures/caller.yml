@@ -1,34 +1,33 @@
-name: Validar versão por sprint
+# Modelo inativo. A revisão compartilhada abaixo já existe e foi fixada pelo SHA.
+# Na primeira rodada, instale apenas o job validate-pr em .github/workflows/.
+name: Validação e publicação do consumidor
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
   push:
-    branches: [main]
+    branches: [master]
 jobs:
-  preview:
-    if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-      pull-requests: read
-      issues: read
-    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@v1
+  validate-pr:
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
+    permissions: {contents: read, pull-requests: read, issues: read}
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
     with:
       adapter: standard-version
-      release_branch: release/v1.0.0
       project_path: examples/standard-version
+      release_branch: release/v1.0.0
+      target_branch: master
   publish:
-    if: github.event_name == 'push' && github.ref_name == 'main'
-    permissions:
-      contents: write
-      pull-requests: read
-      issues: read
-    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@v1
+    if: github.event_name == 'push' && github.ref_name == 'master'
+    permissions: {contents: write, pull-requests: read, issues: read}
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
     with:
       adapter: standard-version
-      release_branch: release/v1.0.0
-      target_branch: main
       project_path: examples/standard-version
+      release_branch: release/v1.0.0
+      target_branch: master
       homologation_environment: homologation
-    concurrency:
-      group: version-publish-${{ github.repository }}-main
-      cancel-in-progress: false
+      changelog_path: examples/standard-version/CHANGELOG.md
+    secrets:
+      versioning_token: ${{ secrets.VERSIONING_TOKEN }}

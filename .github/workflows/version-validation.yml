@@ -1,0 +1,68 @@
+# Apenas checks de PR. Publicação permanece desabilitada até homologação dos quatro perfis.
+name: Validação de integração da sprint
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  validate-standard-version:
+    if: |
+      (startsWith(github.event.pull_request.head.ref, 'feature/') ||
+       startsWith(github.event.pull_request.head.ref, 'release/') ||
+       github.event.pull_request.head.ref == 'develop' ||
+       startsWith(github.event.pull_request.head.ref, 'versioning/standard-version/')) &&
+      !startsWith(github.event.pull_request.head.ref, 'versioning/changesets/') &&
+      !startsWith(github.event.pull_request.head.ref, 'versioning/jgitver/') &&
+      !startsWith(github.event.pull_request.head.ref, 'versioning/go-gitsemver/')
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
+    with:
+      adapter: standard-version
+      project_path: examples/standard-version
+      release_branch: release/v1.0.0
+      target_branch: master
+
+  validate-changesets:
+    if: |
+      (startsWith(github.event.pull_request.head.ref, 'feature/') ||
+       startsWith(github.event.pull_request.head.ref, 'release/') ||
+       github.event.pull_request.head.ref == 'develop' ||
+       startsWith(github.event.pull_request.head.ref, 'versioning/changesets/')) &&
+      !startsWith(github.event.pull_request.head.ref, 'versioning/standard-version/')
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
+    with:
+      adapter: changesets
+      project_path: examples/changesets
+      release_branch: release/v1.0.0
+      target_branch: master
+
+  validate-jgitver:
+    if: |
+      (startsWith(github.event.pull_request.head.ref, 'feature/') ||
+       startsWith(github.event.pull_request.head.ref, 'release/') ||
+       github.event.pull_request.head.ref == 'develop')
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
+    with:
+      adapter: jgitver
+      project_path: examples/jgitver
+      release_branch: release/v1.0.0
+      target_branch: master
+
+  validate-go-gitsemver:
+    if: |
+      (startsWith(github.event.pull_request.head.ref, 'feature/') ||
+       startsWith(github.event.pull_request.head.ref, 'release/') ||
+       github.event.pull_request.head.ref == 'develop')
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@ce1ad6bcaba9a27d86101984d6ef348c5dd0d583
+    with:
+      adapter: go-gitsemver
+      project_path: examples/go-gitsemver
+      release_branch: release/v1.0.0
+      target_branch: master

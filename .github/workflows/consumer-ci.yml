@@ -1,0 +1,72 @@
+name: CI do consumidor
+
+on:
+  pull_request:
+    branches: [master, develop, 'release/**']
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  consumer-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:ts
+
+  consumer-go:
+    uses: ./.github/workflows/go-ci.yml
+
+  consumer-java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: examples/jgitver/pom.xml
+      - run: mvn -B -ntp verify
+        working-directory: examples/jgitver
+      - name: Conferir versão estável para publicação na principal
+        if: github.event_name == 'push' && github.ref_name == 'master'
+        env:
+          JGITVER_BRANCH: master
+        working-directory: examples/jgitver
+        run: |
+          version=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
+          version=${version##*$'\n'}
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo "jgitver não calculou versão estável: $version" >&2
+            exit 1
+          }
+          echo "Versão candidata do commit para master: $version"
+
+  shared-contract:
+    if: vars.SHARED_VERSIONING_SHA != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ModulosTestesAutomatizados/.github
+          ref: ${{ vars.SHARED_VERSIONING_SHA }}
+          path: .shared-versioning
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: |
+          SHARED_REPO="$GITHUB_WORKSPACE/.shared-versioning" npm test
+          SHARED_REPO="$GITHUB_WORKSPACE/.shared-versioning" bash tests/versioning/validate-contract.sh

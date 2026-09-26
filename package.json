@@ -7,12 +7,15 @@
     "examples/changesets"
   ],
   "scripts": {
-    "test": "node --test tests/versioning/*.test.mjs"
+    "test": "node --test tests/versioning/*.test.mjs",
+    "build:ts": "tsc -p examples/standard-version/tsconfig.json",
+    "test:ts": "npm run build:ts && node --test examples/standard-version/tests/*.test.mjs"
   },
   "devDependencies": {
     "@changesets/changelog-git": "1.0.0",
     "@changesets/cli": "3.0.3",
     "standard-version": "9.5.0",
+    "typescript": "5.9.3",
     "yaml": "2.9.1"
   }
 }
