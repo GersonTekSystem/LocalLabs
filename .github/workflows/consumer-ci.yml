@@ -22,6 +22,7 @@ jobs:
       - run: npm run test:ts
 
   consumer-go:
+    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/go-ci.yml
 
   consumer-java:

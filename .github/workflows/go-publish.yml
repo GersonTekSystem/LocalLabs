@@ -1,0 +1,23 @@
+name: Publicação Go após integração
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  go-ci:
+    uses: ./.github/workflows/go-ci.yml
+
+  publish:
+    needs: go-ci
+    permissions:
+      contents: write
+      pull-requests: read
+      issues: read
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-publish.yml@ce1ad6bcaba9a27d86101984d6ef348c5dd0d583
+    with:
+      adapter: go-gitsemver
+      project_path: examples/go-gitsemver
+      release_branch: release/v1.0.0
+      target_branch: master
+      homologation_environment: homologation
