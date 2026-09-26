@@ -60,7 +60,7 @@ jobs:
       (startsWith(github.event.pull_request.head.ref, 'feature/') ||
        startsWith(github.event.pull_request.head.ref, 'release/') ||
        github.event.pull_request.head.ref == 'develop')
-    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@b4883c78d214d61255e0adae7dead8dc3dad9692
+    uses: ModulosTestesAutomatizados/.github/.github/workflows/version-preview.yml@ce1ad6bcaba9a27d86101984d6ef348c5dd0d583
     with:
       adapter: go-gitsemver
       project_path: examples/go-gitsemver

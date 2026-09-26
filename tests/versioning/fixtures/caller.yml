@@ -31,6 +31,3 @@ jobs:
       changelog_path: examples/standard-version/CHANGELOG.md
     secrets:
       versioning_token: ${{ secrets.VERSIONING_TOKEN }}
-    concurrency:
-      group: version-publish-${{ github.repository }}-master
-      cancel-in-progress: false
